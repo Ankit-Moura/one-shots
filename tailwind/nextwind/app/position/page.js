@@ -1,0 +1,12 @@
+export default function page(){
+    return <div className="text-gray-300">
+    <h2 className="">Css positioning</h2>
+    <ul className="ml-2">
+        <li>static</li>
+        <li>relative</li>
+        <li>absolute</li>
+        <li>fixed</li>
+        <li>sticky</li>
+    </ul>
+    </div>
+}

@@ -1,7 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<stdbool.h>
 #define MAXNAME 250
 #define SIZE 10
+
 
 
 typedef struct {
@@ -22,16 +24,47 @@ hash_map * init_hash_map(){
     return h;
 }
 
-int hash(person * p, hash_map * h){
+bool compareString(char * str1, char * str2){
+    int s1 = sizeof(str1)/sizeof(str1[0]);
+    int s2 = sizeof(str2)/sizeof(str2[0]);
+    if (s1<s2){
+        int i = 0;
+        while(str1[i] != '\0'){
+            if (str1[i] == str2[i]){
+                i++;
+                continue;
+            }
+            return false;
+        }
+        return true;
+    }
+    else{
+        int i = 0;
+        while(str2[i] != '\0'){
+            if (str1[i] == str2[i]){
+                i++;
+                continue;
+            }
+            return false;
+        }
+        return true;
+    }
+    return false;
+}
+
+int hash(char * key, hash_map * h){
     int sum = 0;
     unsigned int i =  0;
-    while(p->name[i] != '\0'){
-        sum += p->name[i];
+    while(key[i] != '\0'){
+        sum += key[i];
         i++;
     }
     sum = sum%SIZE;
     if (h->arr[sum]!=NULL){
-        printf("collision....between %s and %s\n", h->arr[sum]->name, p->name);
+        if (compareString(h->arr[sum]->name, key)){
+            return sum;
+        }
+        printf("collision....between %s and %s\n", h->arr[sum]->name, key);
         int j = sum;
         j = (j+1)%SIZE;
         sum = 0;
@@ -40,17 +73,52 @@ int hash(person * p, hash_map * h){
             sum++;
         }
         if (h->arr[j]==NULL){
-            h->arr[j] = p;
-            return 0;
+            return j;
         }
         else{
-            printf("map is full sed life...%s\n", p->name);
+            printf("map is full sed life...%s\n", key);
             return -1;
         }
     }
-    h->arr[sum%SIZE] = p;
-    return 0;
+    return sum;
 }
+
+int getHash(char * key, hash_map * h){
+    int sum = 0;
+    unsigned int i =  0;
+    while(key[i] != '\0'){
+        sum += key[i];
+        i++;
+    }
+    sum = sum%SIZE;
+    if (h->arr[sum]!=NULL){
+        if (compareString(h->arr[sum]->name, key)){
+            return sum;
+        }
+        printf("collision....between %s and %s\n", h->arr[sum]->name, key);
+        int j = sum;
+        j = (j+1)%SIZE;
+        sum = 0;
+        while (h->arr[j]!=NULL && sum<SIZE){
+            if (compareString(h->arr[j]->name, key)) return j;
+            j = (j+1)%SIZE;
+            sum++;
+        }
+        printf("can't find %s in map sed life\n", key);
+        return -1;
+    }
+    return sum;
+}
+
+
+void insert_ele( person *p, hash_map *h){
+    int index = hash(p->name, h);
+    if (index == -1) return;
+    h->arr[index] = p;
+    return;
+}
+
+
 
 void printHashMap(hash_map *h){
     for (int i = 0; i<SIZE; i++){
@@ -62,6 +130,15 @@ void printHashMap(hash_map *h){
     }
     printf("---------------------------------\n");
 }
+
+void find_ele( char * name, hash_map * h){
+    int i = getHash(name, h);
+    if (i == -1){
+        printf("%s doesn't exit in map\n", name);
+        return ;
+    }
+    printf("%s is at arr[%d]\n", name, i);
+}                                             
 
 int main(){
     hash_map *h = init_hash_map();
@@ -79,17 +156,21 @@ int main(){
     person p11 = {.age = 21, .name = "overflow"};
 
     // Inserting into hash map
-    hash(&p1, h);
-    hash(&p2, h);
-    hash(&p3, h);
-    hash(&p4, h);
-    hash(&p5, h);
-    hash(&p6, h);
-    hash(&p7, h);
-    hash(&p8, h);
-    hash(&p9, h);
-    hash(&p10, h);
-    hash(&p11, h); 
+    insert_ele(&p2, h);
+    insert_ele(&p1, h);
+    insert_ele(&p3, h);
+    insert_ele(&p4, h);
+    insert_ele(&p5, h);
+    insert_ele(&p6, h);
+    insert_ele(&p7, h);
+    insert_ele(&p8, h);
+    insert_ele(&p9, h);
+    insert_ele(&p10, h);
+    insert_ele(&p11, h); 
     printHashMap(h);
+    find_ele("ankit", h);
+    find_ele("roe", h);
+    find_ele("xxx", h);
+
     return 0;
 }

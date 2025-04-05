@@ -23,7 +23,7 @@ int main(){
     display_stack(s);
     printf("popped -> %d\n", pop(s));
     printf("popped -> %d\n", pop(s));
-    printf("peek -> %d\n", peek(s));\
+    printf("peek -> %d\n", peek(s));
     s = push(s, 99);
     display_stack(s);
     destroy_Stack(s);

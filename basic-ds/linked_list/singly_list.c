@@ -6,17 +6,12 @@ int main() {
     struct node *list = NULL;
     list = append_node(list, 5);
     list = append_node(list, 0);
-    list = append_node(list, 228);
+    list = append_node(list, 5);
     list = append_node(list, 67);
     list = append_node(list, 34);
     print_ll(list);
-    printf("item found %d\n", search_item(list, 67));
-    printf("item found %d\n", search_item(list, 7));
-    list = insert_node(list , 44, 2);
-    list = delete_node(list, 0);
+    list = swap(list, 4, 1);
     print_ll(list);
-    delete_linked_list(list);
-    describe_dataStructure();
     return 0;
 }
 

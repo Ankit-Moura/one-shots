@@ -1,34 +1,8 @@
 #include <stdio.h>
-#include "./../linked_list/lib/singly_linked_list.h"
+#include "../../linked_list/lib/singly_linked_list.h"
+#include "stack_ll.h"
 #include <stdlib.h>
 
-typedef struct {
-    struct node * list;
-} stack;
-
-stack * init_stack();
-stack * push(stack* , int);
-int pop(stack*);
-int peek(stack*);
-void display_stack(stack *);
-void destroy_stack(stack *);
-
-int main(){
-    stack *s = init_stack();
-    s = push(s, 10);
-    s = push(s, 20);
-    s = push(s, 30);
-    s = push(s, 40);
-    s = push(s, 50);
-    s = push(s, 60);
-    display_stack(s);
-    printf("popped -> %d\n", pop(s));
-    printf("popped -> %d\n", pop(s));
-    printf("peek -> %d\n", peek(s));
-    s = push(s, 99);
-    display_stack(s);
-    destroy_stack(s);
-}
 
 stack * init_stack(){
     stack * s = (stack *)malloc(sizeof(stack));
